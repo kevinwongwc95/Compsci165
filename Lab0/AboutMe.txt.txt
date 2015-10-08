@@ -1,0 +1,6 @@
+1. Kevin Wong
+2. COMPSC-110 taken summer 2013 semester with Prof. Pentcheva.
+3. GNU GCC Compiler 
+4. Code Blocks 
+
+

@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1400188243 source:c:\users\kevin\dropbox\compsc165\lab16\animal\main.cpp
+	<iostream>
+	<cstring>
+	<cctype>
+	<fstream>
+

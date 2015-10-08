@@ -1,0 +1,244 @@
+// Lab 5 The Hangman Game
+// Programmer: Kevin Wong
+// Editor(s) used: Codeblocks
+// Compiler(s) used: GNU GCC Compiler
+
+
+#include <iostream>
+using std::cout;
+using std::cin;
+using std::endl;
+
+#include <string>
+using std::string;
+
+#include <fstream>
+using std::ifstream;
+
+#include <cstdlib>
+
+#include <ctime>
+
+//function prototypes
+void draw(int);
+bool end(int, string, string);
+int match(string&, string&, char, int);
+string read ();
+
+int main()
+{
+  //seed random number generator
+  srand(time(0));
+
+  //variable declarations
+  int miss=0, hit=0;
+  string letter;
+  string guess = "";
+  char user;
+  bool loop=false;
+  int number;
+
+  //student info
+  cout << "Lab 5, The Hangman Game \n";
+  cout << "Programmer: Kevin Wong\n";
+  cout << "Editor(s) used: Codeblocks\n";
+  cout << "Compiler(s) used: GNU GCC Compiler\n";
+  cout << "File: " << __FILE__ << endl;
+  cout << "Complied: " << __DATE__ << " at " << __TIME__ << endl << endl;
+
+  //call to read function output set equal to variable letter
+  letter=read();
+
+  number=letter.length();
+
+  //loop that adds blanks
+  for(int x=0; x<number; x++)
+  {
+    guess=guess.append(" ");
+  }
+
+
+  //user input loop
+  while(1)
+
+  {
+    cout<<"Input guess: ";
+
+    cin>>user;
+
+    cin.ignore(1000,10);
+
+    user=tolower(user);
+
+    hit=match(letter, guess, user, number);
+
+    if (hit==0 )
+    {
+      miss=miss+1;
+    }
+
+
+    draw(miss);
+
+    for(int x=0; x<number; x++)
+    {
+      cout<<guess[x]<<" ";
+    }
+
+    cout<<endl;
+
+    for(int x=0; x<number; x++)
+    {
+      cout<<"_ ";
+    }
+
+
+    loop=end(miss, letter, guess);
+    if(loop==true)
+    {
+      break;
+    }
+
+
+  }
+}
+
+//read function that reads from test.txt file
+string read()
+{
+  ifstream fin;
+  int counter=0, place;
+  string word;
+
+  fin.open("test.txt");
+
+  while(!fin.eof())
+  {
+    fin>>word;
+    counter++;
+
+  }
+
+
+  fin.close();
+
+  counter=counter-1;
+
+  place=(rand()%(counter));
+
+
+  fin.open("test.txt");
+
+  for(int x=1; x<place; x++)
+  {
+    fin>>word;
+  }
+
+  fin>>word;
+
+  fin.close();
+
+  return word;
+
+}
+
+//determines if letter guessed is correct or not.
+int match(string& letter, string& guess, char user, int number)
+{
+  int hit=0;
+
+  for (int x=0; x<number; x++)
+  {
+    if (user==letter[x])
+    {
+      guess[x] = user;
+      hit++;
+    }
+  }
+  return hit;
+}
+
+
+  //draw function for the gallows
+  void draw(int miss)
+  {
+    cout<<"  +----+"<<endl;
+    cout<<"  |";
+    if(miss>=1)
+    {
+      cout<<"    |"<<endl;
+    }
+    else
+    {
+      cout<<endl;
+    }
+
+    cout<<"  |";
+    if(miss>=1)
+    {
+      cout<<"    O"<<endl;
+    } else
+    {
+      cout<<endl;
+    }
+    cout<<"  |";
+
+    if(miss>=2)
+    {
+      cout<<"   -+";
+      if(miss>=3)
+      {
+        cout<<"-";
+      }
+    }
+
+    cout<<endl;
+
+    cout<<"  |";
+    if(miss>=4)
+    {
+      cout<<"    |"<<endl;
+      cout<<"  |";
+      cout<<"    +";
+
+    }
+
+    cout<<endl<<"  |";
+    if(miss>=5)
+    {
+      cout<<"   /";
+      if(miss>=6)
+      {
+        cout<<" \\";
+      }
+    }
+    cout<<endl;
+    cout<<"  |"<<endl;
+    cout<<"  |"<<endl;
+    cout<<"  |"<<endl;
+    cout<<"--+--------"<<endl<<endl<<endl;
+
+  }
+
+
+//end function that displays the win or lose message.
+bool end(int miss, string letter, string guess)
+  {
+  bool loop=false;
+
+  if (guess==letter)
+  {
+    cout<<endl<<"You win!";
+    loop=true;
+  }
+
+
+  if(miss==6)
+  {
+    cout<<endl<<"You lose";
+    loop=true;
+  }
+
+  return loop;
+
+  }
